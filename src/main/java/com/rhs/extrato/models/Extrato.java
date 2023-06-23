@@ -1,12 +1,12 @@
 package com.rhs.extrato.models;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.UUID;
 
 @Entity
 @Data
@@ -14,7 +14,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "EXTRATO_RHS" , schema = "db_fatura_prime")
-public class ExtratoModel {
+public class Extrato {
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "id")
+    private UUID id;
     @Column(name = "Documento")
     private String documento;
     @Column(name = "Login")
