@@ -15,6 +15,6 @@ spring:
     pattern:
       console: "%d %-5level %logger : %msg%n"
     level:
-      org.springframework: info
+      org.springframework: DEBUG
       org.hibernate: debug
       org.springframework.web: DEBUG

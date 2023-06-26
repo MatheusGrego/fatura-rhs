@@ -28,7 +28,7 @@ public class Extrato {
     @Column(name = "Hora_consulta")
     private String horaConsulta;
     @Column(name = "Valor")
-    private Double valor;
+    private String valor;
     @Column(name = "IP_Consulta")
     private String ipConsulta;
     @Column(name = "Nome_consulta")
