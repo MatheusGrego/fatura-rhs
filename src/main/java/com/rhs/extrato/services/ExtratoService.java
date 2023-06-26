@@ -2,6 +2,7 @@ package com.rhs.extrato.services;
 
 import com.rhs.extrato.models.Extrato;
 import com.rhs.extrato.repositories.ExtratoRepository;
+import com.rhs.extrato.util.DateUtil;
 import lombok.SneakyThrows;
 import org.apache.poi.EmptyFileException;
 import org.apache.poi.ss.usermodel.CellType;
@@ -23,6 +24,7 @@ public class ExtratoService {
     @Autowired
     private ExtratoRepository extratoRepository;
 
+
     @SneakyThrows
     public void readFile(MultipartFile file) {
         if (file.isEmpty()) throw new EmptyFileException();
@@ -39,9 +41,12 @@ public class ExtratoService {
                 .filter(i -> {
                     XSSFRow row = sheet.getRow(i);
                     return row != null && row.getPhysicalNumberOfCells() >= 7;
+
                 })
                 .findFirst()
                 .orElse(-1);
+
+
 
         if (startRow != -1) {
             List<Extrato> dadosList = IntStream.range(startRow, sheet.getLastRowNum())
@@ -52,7 +57,7 @@ public class ExtratoService {
                                 .id(UUID.randomUUID())
                                 .documento(getStringValue(row, 1))
                                 .login(getStringValue(row, 2))
-                                .dataConsulta(getStringValue(row, 3))
+                                .dataConsulta(DateUtil.convertExcelDate(getStringValue(row, 3)))
                                 .horaConsulta(getStringValue(row, 4))
                                 .valor(getStringValue(row, 5))
                                 .ipConsulta(getStringValue(row, 6))
@@ -64,8 +69,9 @@ public class ExtratoService {
                     .toList();
 
             extratoRepository.saveAll(dadosList);
+            workbook.close();
         }
-        workbook.close();
+
 
     }
 
