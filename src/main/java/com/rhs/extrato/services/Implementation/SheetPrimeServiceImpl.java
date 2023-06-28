@@ -1,7 +1,8 @@
-package com.rhs.extrato.services;
+package com.rhs.extrato.services.Implementation;
 
 import com.rhs.extrato.models.Extrato;
 import com.rhs.extrato.repositories.ExtratoRepository;
+import com.rhs.extrato.services.SheetService;
 import com.rhs.extrato.util.TimeUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.EmptyFileException;
@@ -24,21 +25,25 @@ import java.util.stream.IntStream;
 
 @Service
 @Slf4j
-public class ExtratoService {
+public class SheetPrimeServiceImpl implements SheetService {
     @Autowired
-    private ExtratoRepository extratoRepository;
+    ExtratoRepository extratoRepository;
 
-
-    public void readFile(MultipartFile file) throws IOException{
+    @Override
+    public boolean validateSheet(MultipartFile file) throws IOException {
         if (file.isEmpty()) throw new EmptyFileException();
-        String mimeType  = new Tika().detect(file.getBytes());
+        String mimeType = new Tika().detect(file.getBytes());
         if (!mimeType.equals("application/x-tika-ooxml"))
             throw new MultipartException("Tipo de arquivo não permitido");
-        fileIterator(file);
-
+        return false;
     }
 
-    public void fileIterator(MultipartFile file) throws IOException {
+    @Override
+    public void insertSheet(MultipartFile file) throws IOException {
+        if (!validateSheet(file)) {
+            throw new IOException();
+        }
+
         XSSFWorkbook workbook = new XSSFWorkbook(file.getInputStream());
         XSSFSheet sheet = workbook.getSheetAt(0);
 
@@ -76,7 +81,7 @@ public class ExtratoService {
                 extratoRepository.saveAll(dadosList);
             }
         } catch (NumberFormatException e) {
-            log.info("Error: "+ e.getMessage());
+            log.info("Error: " + e.getMessage());
             throw e;
         }
         workbook.close();
@@ -84,7 +89,8 @@ public class ExtratoService {
 
     }
 
-    private String getStringValue(XSSFRow row, int columnIndex) {
+    @Override
+    public String getStringValue(XSSFRow row, int columnIndex) {
         XSSFCell cell = row.getCell(columnIndex);
         if (cell != null) {
             if (cell.getCellType() == CellType.NUMERIC) {
@@ -94,5 +100,4 @@ public class ExtratoService {
         }
         return null;
     }
-
 }
