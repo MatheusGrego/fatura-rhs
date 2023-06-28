@@ -1,5 +1,6 @@
 package com.rhs.extrato.controllers;
 
+import com.rhs.extrato.services.Implementation.SheetCrlvImpl;
 import com.rhs.extrato.services.Implementation.SheetPrimeServiceImpl;
 import org.apache.poi.EmptyFileException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,11 +20,23 @@ import java.io.IOException;
 public class FaturaController {
     @Autowired
     SheetPrimeServiceImpl sheetService;
+    @Autowired
+    SheetCrlvImpl sheetCrlvImpl;
 
     @PostMapping("/upload")
-    public ResponseEntity<?> uploadExcel(@RequestPart("arquivo") MultipartFile file) {
+    public ResponseEntity<?> uploadSheet(@RequestPart("arquivo") MultipartFile file) {
         try {
             sheetService.insertSheet(file);
+        } catch (IOException | EmptyFileException | MultipartException | NumberFormatException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+        return new ResponseEntity<>(file, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/upload/crlv")
+    public ResponseEntity<?> uploadSheetCrlv(@RequestPart("arquivo") MultipartFile file) {
+        try {
+            sheetCrlvImpl.insertSheet(file);
         } catch (IOException | EmptyFileException | MultipartException | NumberFormatException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
         }

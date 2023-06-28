@@ -35,7 +35,7 @@ public class SheetPrimeServiceImpl implements SheetService {
         String mimeType = new Tika().detect(file.getBytes());
         if (!mimeType.equals("application/x-tika-ooxml"))
             throw new MultipartException("Tipo de arquivo não permitido");
-        return false;
+        return true;
     }
 
     @Override

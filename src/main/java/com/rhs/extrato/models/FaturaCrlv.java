@@ -6,7 +6,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.sql.Timestamp;
 import java.util.UUID;
 
 @Entity
@@ -17,6 +16,7 @@ import java.util.UUID;
 @Table(name = "EXTRATO_RHS_CRLV" , schema = "db_fatura_prime")
 public class FaturaCrlv {
     @Column(name = "id")
+    @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
@@ -27,7 +27,7 @@ public class FaturaCrlv {
     @Column(name = "usuario")
     private String usuario;
     @Column(name = "data/hora")
-    private Timestamp dataHora;
+    private String dataHora;
     @Column(name = "cliente")
     private String cliente;
     @Column(name = "custo")
