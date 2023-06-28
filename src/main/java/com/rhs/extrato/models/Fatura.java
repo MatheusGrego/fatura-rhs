@@ -14,7 +14,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "EXTRATO_RHS" , schema = "db_fatura_prime")
-public class Extrato {
+public class Fatura {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id")

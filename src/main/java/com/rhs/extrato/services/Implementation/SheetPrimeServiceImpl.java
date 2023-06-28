@@ -1,7 +1,7 @@
 package com.rhs.extrato.services.Implementation;
 
-import com.rhs.extrato.models.Extrato;
-import com.rhs.extrato.repositories.ExtratoRepository;
+import com.rhs.extrato.models.Fatura;
+import com.rhs.extrato.repositories.FaturaRepository;
 import com.rhs.extrato.services.SheetService;
 import com.rhs.extrato.util.TimeUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -27,7 +27,7 @@ import java.util.stream.IntStream;
 @Slf4j
 public class SheetPrimeServiceImpl implements SheetService {
     @Autowired
-    ExtratoRepository extratoRepository;
+    FaturaRepository faturaRepository;
 
     @Override
     public boolean validateSheet(MultipartFile file) throws IOException {
@@ -59,11 +59,11 @@ public class SheetPrimeServiceImpl implements SheetService {
 
         try {
             if (startRow != -1) {
-                List<Extrato> dadosList = IntStream.range(startRow, sheet.getLastRowNum())
+                List<Fatura> dadosList = IntStream.range(startRow, sheet.getLastRowNum())
                         .mapToObj(sheet::getRow)
                         .filter(Objects::nonNull)
                         .map(row -> {
-                            Extrato dados = Extrato.builder()
+                            Fatura dados = Fatura.builder()
                                     .id(UUID.randomUUID())
                                     .documento(getStringValue(row, 1))
                                     .login(getStringValue(row, 2))
@@ -78,7 +78,7 @@ public class SheetPrimeServiceImpl implements SheetService {
                         })
                         .toList();
 
-                extratoRepository.saveAll(dadosList);
+                faturaRepository.saveAll(dadosList);
             }
         } catch (NumberFormatException e) {
             log.info("Error: " + e.getMessage());

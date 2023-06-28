@@ -1,11 +1,11 @@
 package com.rhs.extrato.repositories;
 
-import com.rhs.extrato.models.Extrato;
+import com.rhs.extrato.models.Fatura;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.UUID;
 
 @Repository
-public interface ExtratoRepository extends JpaRepository<Extrato, UUID> {
+public interface FaturaRepository extends JpaRepository<Fatura, UUID> {
 }

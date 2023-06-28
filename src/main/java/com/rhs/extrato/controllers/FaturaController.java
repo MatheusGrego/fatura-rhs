@@ -16,7 +16,7 @@ import java.io.IOException;
 
 @RestController
 @RequestMapping("/extrato")
-public class ExtratoController {
+public class FaturaController {
     @Autowired
     SheetPrimeServiceImpl sheetService;
 

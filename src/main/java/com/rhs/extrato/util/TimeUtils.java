@@ -22,8 +22,9 @@ public class TimeUtils {
         BigDecimal hoursDecimal = decimal.multiply(new BigDecimal(24));
 
         int hours = hoursDecimal.intValue();
-        int minutes = hoursDecimal.remainder(BigDecimal.ONE).multiply(new BigDecimal(60)).intValue();
-        int seconds = hoursDecimal.remainder(BigDecimal.ONE).multiply(new BigDecimal(60)).remainder(BigDecimal.ONE).multiply(new BigDecimal(60)).intValue();
+        final BigDecimal multiply = hoursDecimal.remainder(BigDecimal.ONE).multiply(new BigDecimal(60));
+        int minutes = multiply.intValue();
+        int seconds = multiply.remainder(BigDecimal.ONE).multiply(new BigDecimal(60)).intValue();
 
         
         return String.format("%02d:%02d:%02d", hours, minutes, seconds);
