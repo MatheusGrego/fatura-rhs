@@ -1,4 +1,4 @@
-package com.rhs.extrato.util;
+package com.rhs.extrato.utils;
 
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
