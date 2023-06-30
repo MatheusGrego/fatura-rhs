@@ -2,6 +2,7 @@ package com.rhs.extrato.controllers;
 
 import com.rhs.extrato.services.Implementation.SheetCrlvImpl;
 import com.rhs.extrato.services.Implementation.SheetPrimeServiceImpl;
+import com.rhs.extrato.utils.FileUtils;
 import org.apache.poi.EmptyFileException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,21 +27,23 @@ public class FaturaController {
     @PostMapping("/upload")
     public ResponseEntity<?> uploadSheet(@RequestPart("arquivo") MultipartFile file) {
         try {
-            sheetService.insertSheet(file);
+            FileUtils.validateSheet(file);
+            sheetService.insertSheet(file.getInputStream());
         } catch (IOException | EmptyFileException | MultipartException | NumberFormatException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
         }
-        return new ResponseEntity<>(file, HttpStatus.CREATED);
+        return new ResponseEntity<>("Dados salvos! ",HttpStatus.CREATED);
     }
 
     @PostMapping("/upload/crlv")
     public ResponseEntity<?> uploadSheetCrlv(@RequestPart("arquivo") MultipartFile file) {
         try {
-            sheetCrlvImpl.insertSheet(file);
+            FileUtils.validateSheet(file);
+            sheetCrlvImpl.insertSheet(file.getInputStream());
         } catch (IOException | EmptyFileException | MultipartException | NumberFormatException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
         }
-        return new ResponseEntity<>(file, HttpStatus.CREATED);
+        return new ResponseEntity<>("Dados CRLV salvos",HttpStatus.CREATED);
     }
 
 }
