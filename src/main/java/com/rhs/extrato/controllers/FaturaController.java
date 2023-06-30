@@ -3,6 +3,9 @@ package com.rhs.extrato.controllers;
 import com.rhs.extrato.services.Implementation.SheetCrlvImpl;
 import com.rhs.extrato.services.Implementation.SheetPrimeServiceImpl;
 import com.rhs.extrato.utils.FileUtils;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.apache.poi.EmptyFileException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,6 +21,7 @@ import java.io.IOException;
 
 @RestController
 @RequestMapping("/extrato")
+@Tag(name = "Fatura: ",description = "\nEndpoints relacionados para cada tipo de arquivo.")
 public class FaturaController {
     @Autowired
     SheetPrimeServiceImpl sheetService;
@@ -25,6 +29,20 @@ public class FaturaController {
     SheetCrlvImpl sheetCrlvImpl;
 
     @PostMapping("/upload")
+    @Operation(
+            description = "Upload de planilhas prime comuns",
+            summary = "Planilhas comuns",
+            responses = {
+                    @ApiResponse(
+                            description = "Created",
+                            responseCode = "201"
+                    ),
+                    @ApiResponse(
+                    description = "Unprocessable Content",
+                    responseCode = "422"
+            )
+            }
+    )
     public ResponseEntity<?> uploadSheet(@RequestPart("arquivo") MultipartFile file) {
         try {
             FileUtils.validateSheet(file);
@@ -36,6 +54,20 @@ public class FaturaController {
     }
 
     @PostMapping("/upload/crlv")
+    @Operation(
+            description = "Upload de planilhas prime CRLV",
+            summary = "Planilhas CRLV",
+            responses = {
+                    @ApiResponse(
+                            description = "Created",
+                            responseCode = "201"
+                    ),
+                    @ApiResponse(
+                            description = "Unprocessable Content",
+                            responseCode = "422"
+                    )
+            }
+    )
     public ResponseEntity<?> uploadSheetCrlv(@RequestPart("arquivo") MultipartFile file) {
         try {
             FileUtils.validateSheet(file);
