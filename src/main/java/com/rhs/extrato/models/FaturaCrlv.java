@@ -13,7 +13,7 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "EXTRATO_RHS_CRLV" , schema = "db_fatura_prime")
+@Table(name = "EXTRATO_RHS_CRLV", schema = "db_fatura_prime")
 public class FaturaCrlv {
     @Column(name = "id")
     @Id

@@ -18,9 +18,10 @@ import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 @Service
@@ -59,7 +60,7 @@ public class SheetPrimeServiceImpl implements SheetService {
 
         try {
             if (startRow != -1) {
-                List<Fatura> dadosList = IntStream.range(startRow, sheet.getLastRowNum())
+                Set<Fatura> dadosList = IntStream.range(startRow, sheet.getLastRowNum())
                         .mapToObj(sheet::getRow)
                         .filter(Objects::nonNull)
                         .map(row -> {
@@ -76,7 +77,7 @@ public class SheetPrimeServiceImpl implements SheetService {
 
                             return dados;
                         })
-                        .toList();
+                                .collect(Collectors.toSet());
 
                 faturaRepository.saveAll(dadosList);
             }

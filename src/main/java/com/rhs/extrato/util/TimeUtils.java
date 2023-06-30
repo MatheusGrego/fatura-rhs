@@ -26,11 +26,18 @@ public class TimeUtils {
         BigDecimal hoursDecimal = decimal.multiply(new BigDecimal(24));
 
         int hours = hoursDecimal.intValue();
-        final BigDecimal multiply = hoursDecimal.remainder(BigDecimal.ONE).multiply(new BigDecimal(60));
-        int minutes = multiply.intValue();
-        int seconds = multiply.remainder(BigDecimal.ONE).multiply(new BigDecimal(60)).intValue();
+        final BigDecimal MULTIPLY = hoursDecimal.remainder(BigDecimal.ONE).multiply(new BigDecimal(60));
+        int minutes = MULTIPLY.intValue();
+        int seconds = MULTIPLY.remainder(BigDecimal.ONE).multiply(new BigDecimal(60)).intValue();
 
         
         return String.format("%02d:%02d:%02d", hours, minutes, seconds);
+    }
+
+    public static String convertToDateTime(double excelDate) {
+        long milliseconds = (long) ((excelDate - 25569) * 24 * 60 * 60 * 1000);
+        Date date = new Date(milliseconds);
+        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        return format.format(date);
     }
 }
